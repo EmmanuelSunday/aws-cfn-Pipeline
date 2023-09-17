@@ -7,22 +7,29 @@ Parameters:
     Type: String
     Default: customer_info
 
-  DBUsernameParameter:
-    Type: "AWS::SSM::Parameter::Value<String>"
-    Default: dbUsername
+  DBUsername:
     NoEcho: 'false'
     Description: Username for database access
+    Type: String
+    MinLength: '2'
+    MaxLength: '16'
+    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
+    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
+    # Default: nasadmin
 
   
   NasLeopardParameter:
     Type: "AWS::SSM::Parameter::Value<String>"
     Default: nasSSLCertificateALB
 
-  DBPasswordParameter:
-    Type: "AWS::SSM::Parameter::Value<String>"
-    Default: dbPassword
+  DBPassword:
     NoEcho: 'true'
     Description: Password for database access
+    Type: String
+    MinLength: '8'
+    MaxLength: '41'
+    AllowedPattern: '[a-zA-Z0-9]*'
+    ConstraintDescription: must contain only alphanumeric characters.
 
   DBInstanceType:
     Description: Database Instance Class
@@ -86,8 +93,8 @@ Resources:
       DBClusterIdentifier: nas-db-cluster
       AllocatedStorage: 400
       DatabaseName: !Ref DBName
-      MasterUsername: !Ref DBUsernameParameter
-      MasterUserPassword: !Ref DBPasswordParameter
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
       DBClusterInstanceClass: !Ref DBInstanceType
       Engine: mysql
       EngineVersion: '8.0.28'
@@ -216,8 +223,8 @@ Resources:
             cp -r wordpress/* /var/www/html/
             cp wordpress/wp-config-sample.php /var/www/html/wp-config.php
             sed -i "s/database_name_here/${DBName}/g" /var/www/html/wp-config.php
-            sed -i "s/username_here/${DBUsernameParameter}/g" /var/www/html/wp-config.php
-            sed -i "s/password_here/${DBPasswordParameter}/g" /var/www/html/wp-config.php
+            sed -i "s/username_here/${DBUsername}/g" /var/www/html/wp-config.php
+            sed -i "s/password_here/${DBPassword}/g" /var/www/html/wp-config.php
             sed -i "s/localhost/${NasDb.Endpoint.Address}/g" /var/www/html/wp-config.php
             amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
             systemctl restart httpd
@@ -405,8 +412,8 @@ Resources:
             cp -r wordpress/* /var/www/html/
             cp wordpress/wp-config-sample.php /var/www/html/wp-config.php
             sed -i "s/database_name_here/${DBName}/g" /var/www/html/wp-config.php
-            sed -i "s/username_here/${DBUsernameParameter}/g" /var/www/html/wp-config.php
-            sed -i "s/password_here/${DBPasswordParameter}/g" /var/www/html/wp-config.php
+            sed -i "s/username_here/${DBUsername}/g" /var/www/html/wp-config.php
+            sed -i "s/password_here/${DBPassword}/g" /var/www/html/wp-config.php
             sed -i "s/localhost/${NasDb.Endpoint.Address}/g" /var/www/html/wp-config.php
             amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
             systemctl restart httpd
