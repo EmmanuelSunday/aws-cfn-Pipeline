@@ -33,14 +33,18 @@ Parameters:
     MaxLength: '15'
     ConstraintDescription: Must be a comma separated list of IAM User names (OperationsUser1,OperationsUser2)
     
+  UserPasswordParameter:
+    Type: "AWS::SSM::Parameter::Value<String>"
+    Default: userPassword
 
-  Password:
-    NoEcho: 'true'
-    Type: String
-    Description: New account password
-    MinLength: '6'
-    MaxLength: '15'
-    ConstraintDescription: the password must be between 1 and 15 characters
+  # Password:
+  #   NoEcho: 'true'
+  #   Type: String
+  #   Description: New account password
+  #   MinLength: '6'
+  #   MaxLength: '15'
+  #   ConstraintDescription: the password must be between 1 and 15 characters
+    
 
 Resources:
   NasIamGroup1:
@@ -85,75 +89,15 @@ Resources:
                   StringNotLike:
                     aws:RequestedRegion: us-east-1
 
-  NasUser10:
+  NasUser1:
     Type: AWS::IAM::User
     Properties:
       Groups: 
         - !Ref NasIamGroup1
       LoginProfile:
-        Password: !Ref 'Password'
+        Password: !Ref 'UserPasswordParameter'
         PasswordResetRequired: 'true'
-      UserName: !Ref User10
-
-  NasUser11:
-    Type: AWS::IAM::User
-    Properties:
-      Groups: 
-        - !Ref NasIamGroup1
-      LoginProfile:
-        Password: !Ref 'Password'
-        PasswordResetRequired: 'true'
-      UserName: !Ref User11
-
-  NasUser12:
-    Type: AWS::IAM::User
-    Properties:
-      Groups: 
-        - !Ref NasIamGroup1
-      LoginProfile:
-        Password: !Ref 'Password'
-        PasswordResetRequired: 'true'
-      UserName: !Ref User12 
-
-  NasUser13:
-    Type: AWS::IAM::User
-    Properties:
-      Groups: 
-        - !Ref NasIamGroup1
-      LoginProfile:
-        Password: !Ref 'Password'
-        PasswordResetRequired: 'true'
-      UserName: !Ref User13
-
-  NasUser14:
-    Type: AWS::IAM::User
-    Properties:
-      Groups: 
-        - !Ref NasIamGroup1
-      LoginProfile:
-        Password: !Ref 'Password'
-        PasswordResetRequired: 'true'
-      UserName: !Ref User14
-
-  NasUser15:
-    Type: AWS::IAM::User
-    Properties:
-      Groups: 
-        - !Ref NasIamGroup1
-      LoginProfile:
-        Password: !Ref 'Password'
-        PasswordResetRequired: 'true'
-      UserName: !Ref User15
-
-  NasUser16:
-    Type: AWS::IAM::User
-    Properties:
-      Groups: 
-        - !Ref NasIamGroup1
-      LoginProfile:
-        Password: !Ref 'Password'
-        PasswordResetRequired: 'true'
-      UserName: !Ref User16
+      UserName: !Ref User1
 
   NasUser2:
     Type: AWS::IAM::User
@@ -161,7 +105,7 @@ Resources:
       Groups: 
         - !Ref NasIamGroup2
       LoginProfile:
-        Password: !Ref 'Password'
+        Password: !Ref 'UserPasswordParameter'
         PasswordResetRequired: 'true'
       UserName: !Ref User2
 
@@ -171,7 +115,7 @@ Resources:
       Groups: 
         - !Ref NasIamGroup3
       LoginProfile:
-        Password: !Ref 'Password'
+        Password: !Ref 'UserPasswordParameter'
         PasswordResetRequired: 'true'
       UserName: !Ref User3
 
