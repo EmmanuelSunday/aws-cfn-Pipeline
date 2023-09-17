@@ -36,6 +36,7 @@ Parameters:
   UserPasswordParameter:
     Type: "AWS::SSM::Parameter::Value<String>"
     Default: userPassword
+    NoEcho: 'true'
 
   # Password:
   #   NoEcho: 'true'
