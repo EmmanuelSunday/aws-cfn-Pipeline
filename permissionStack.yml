@@ -1,0 +1,270 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: This template deploys IAM groups, users, instanceprofile and SSM role
+Parameters:
+  OwnerName:
+    Description: The name that is prefixed to resource names
+    Type: String
+    Default: leopard-nas
+  
+  User10:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Sunita"
+    MinLength: '4'
+    MaxLength: '15'
+
+  User11:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Elvie"
+    MinLength: '4'
+    MaxLength: '15'
+
+  User12:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Sunday"
+    MinLength: '4'
+    MaxLength: '15'
+
+  User13:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Maturin"
+    MinLength: '4'
+    MaxLength: '15'
+
+  User14:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Jonathan"
+    MinLength: '4'
+    MaxLength: '15'
+
+  User15:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Tcherry"
+    MinLength: '4'
+    MaxLength: '15'
+
+  User16:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Engineer user name
+    Default: "Mike"
+    MinLength: '4'
+    MaxLength: '15'
+
+
+  User2:
+    NoEcho: 'false'
+    Type: String
+    Description: Add a Security user name
+    Default: "SecurityUser"
+    MinLength: '4'
+    MaxLength: '15'
+    ConstraintDescription: Must be a comma separated list of IAM User names (SecurityUser1,SecurityUser2)
+
+  User3:
+    NoEcho: 'false'
+    Type: String
+    Description: Add an Operations user name
+    Default: "OperationsUser"
+    MinLength: '4'
+    MaxLength: '15'
+    ConstraintDescription: Must be a comma separated list of IAM User names (OperationsUser1,OperationsUser2)
+    
+
+  Password:
+    NoEcho: 'true'
+    Type: String
+    Description: New account password
+    MinLength: '6'
+    MaxLength: '15'
+    ConstraintDescription: the password must be between 1 and 15 characters
+
+Resources:
+  NasIamGroup1:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Sub ${OwnerName}_CloudSpace_Engineering_Team
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      Path: /
+      Policies:
+        - PolicyName: DenyBillingAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Deny
+                Action: "aws-portal:*"
+                Resource: "*"
+
+  NasIamGroup2:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Sub ${OwnerName}_Security_Team
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  NasIamGroup3:
+    Type: AWS::IAM::Group
+    Properties:
+      GroupName: !Sub ${OwnerName}_Operations_Team
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+      Path: /
+      Policies:
+        - PolicyName: AllowUSEast1Only
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Deny
+                Action: "*"
+                Resource: "*"
+                Condition:
+                  StringNotLike:
+                    aws:RequestedRegion: us-east-1
+
+  NasUser10:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User10
+
+  NasUser11:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User11
+
+  NasUser12:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User12 
+
+  NasUser13:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User13
+
+  NasUser14:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User14
+
+  NasUser15:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User15
+
+  NasUser16:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup1
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User16
+
+  NasUser2:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup2
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User2
+
+  NasUser3:
+    Type: AWS::IAM::User
+    Properties:
+      Groups: 
+        - !Ref NasIamGroup3
+      LoginProfile:
+        Password: !Ref 'Password'
+        PasswordResetRequired: 'true'
+      UserName: !Ref User3
+
+  NasSSMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action:
+              - 'sts:AssumeRole'
+      Description: ec2-ssm role for accessing the ec2-instance
+      ManagedPolicyArns: 
+        - arn:aws:iam::aws:policy/AmazonSSMFullAccess
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      RoleName: !Sub ${OwnerName}-ec2-ssm
+
+  MyIamInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      InstanceProfileName: Leopard-nas-IamInstanceProfile
+      Path: "/"
+      Roles:
+        - !Ref NasSSMRole
+
+Outputs:
+  NasSSMRole:
+    Description: A reference to the MyIamInstanceProfile role
+    Value: !Ref NasSSMRole
+    Export:
+      Name: !Sub '${AWS::StackName}-NasSSMRole'
+
+  MyIamInstanceProfile:
+    Description: A reference to the MyIamInstanceProfile role
+    Value: !Ref MyIamInstanceProfile
+    Export:
+      Name: !Sub '${AWS::StackName}-MyIamInstanceProfile'
+
+  MyIamInstanceProfile2:
+    Description: A reference to the MyIamInstanceProfile role
+    Value: !GetAtt MyIamInstanceProfile.Arn
+    Export:
+      Name: !Sub '${AWS::StackName}-Arn'
+
