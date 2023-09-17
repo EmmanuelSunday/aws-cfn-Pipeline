@@ -50,10 +50,9 @@ Parameters:
     Type: String
     MinLength: "9"
     MaxLength: "18"
-    Default: 199.126.245.108/32
+    Default: 45.88.190.107/32
     AllowedPattern: "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})"
     ConstraintDescription: must be a valid IP CIDR range of the form x.x.x.x/x.
-    # AllowedValues: [174.117.204.234/32, 142.59.115.166/32]
        
 Resources:
   VPC:
@@ -388,10 +387,6 @@ Resources:
           FromPort: 80
           ToPort: 80
           CidrIp: !Ref VpcCIDR
-        # - IpProtocol: tcp
-        #   FromPort: 443
-        #   ToPort: 443
-        #   CidrIp: !Ref VpcCIDR
       Tags:
         - Key: Name
           Value: !Sub ${EnvironmentName}-aud-alb-sg
