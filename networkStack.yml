@@ -427,7 +427,7 @@ Resources:
 # NAT gateway
   NatGateway1EIP:
     Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+    # DependsOn: InternetGatewayAttachment
     Properties:
       Domain: vpc
       Tags:
@@ -436,7 +436,7 @@ Resources:
 
   NatGateway2EIP:
     Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+    # DependsOn: InternetGatewayAttachment
     Properties:
       Domain: vpc
       Tags:
@@ -445,7 +445,7 @@ Resources:
 
   NatGateway3EIP:
     Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+    # DependsOn: InternetGatewayAttachment
     Properties:
       Domain: vpc
       Tags:
