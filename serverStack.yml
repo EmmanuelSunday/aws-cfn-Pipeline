@@ -7,28 +7,22 @@ Parameters:
     Type: String
     Default: customer_info
 
-  DBUsername:
+  DBUsernameParameter:
+    Type: "AWS::SSM::Parameter::Value<String>"
+    Default: dbUsername
     NoEcho: 'false'
     Description: Username for database access
-    Type: String
-    MinLength: '2'
-    MaxLength: '16'
-    AllowedPattern: '[a-zA-Z][a-zA-Z0-9]*'
-    ConstraintDescription: must begin with a letter and contain only alphanumeric characters.
-    Default: nasadmin
+
   
   NasLeopardParameter:
     Type: "AWS::SSM::Parameter::Value<String>"
     Default: nasSSLCertificateALB
 
-  DBPassword:
+  DBPasswordParameter:
+    Type: "AWS::SSM::Parameter::Value<String>"
+    Default: dbPassword
     NoEcho: 'true'
     Description: Password for database access
-    Type: String
-    MinLength: '8'
-    MaxLength: '41'
-    AllowedPattern: '[a-zA-Z0-9]*'
-    ConstraintDescription: must contain only alphanumeric characters.
 
   DBInstanceType:
     Description: Database Instance Class
@@ -67,6 +61,7 @@ Parameters:
     
   KeyName:
     Type: "AWS::EC2::KeyPair::KeyName"
+    Default: us-east-2-key
   
 Mappings:
   RegionMap:
@@ -91,8 +86,8 @@ Resources:
       DBClusterIdentifier: nas-db-cluster
       AllocatedStorage: 400
       DatabaseName: !Ref DBName
-      MasterUsername: !Ref DBUsername
-      MasterUserPassword: !Ref DBPassword
+      MasterUsername: !Ref DBUsernameParameter
+      MasterUserPassword: !Ref DBPasswordParameter
       DBClusterInstanceClass: !Ref DBInstanceType
       Engine: mysql
       EngineVersion: '8.0.28'
@@ -221,8 +216,8 @@ Resources:
             cp -r wordpress/* /var/www/html/
             cp wordpress/wp-config-sample.php /var/www/html/wp-config.php
             sed -i "s/database_name_here/${DBName}/g" /var/www/html/wp-config.php
-            sed -i "s/username_here/${DBUsername}/g" /var/www/html/wp-config.php
-            sed -i "s/password_here/${DBPassword}/g" /var/www/html/wp-config.php
+            sed -i "s/username_here/${DBUsernameParameter}/g" /var/www/html/wp-config.php
+            sed -i "s/password_here/${DBPasswordParameter}/g" /var/www/html/wp-config.php
             sed -i "s/localhost/${NasDb.Endpoint.Address}/g" /var/www/html/wp-config.php
             amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
             systemctl restart httpd
@@ -230,9 +225,6 @@ Resources:
   # AutoScaling Group
   NasASG:
     Type: AWS::AutoScaling::AutoScalingGroup
-    # DependsOn:
-    #   - ELBTargetGroup
-    #   - FrontEndAlb
     Properties:
       AutoScalingGroupName: frontend-web-ASG
       LaunchTemplate:
@@ -413,8 +405,8 @@ Resources:
             cp -r wordpress/* /var/www/html/
             cp wordpress/wp-config-sample.php /var/www/html/wp-config.php
             sed -i "s/database_name_here/${DBName}/g" /var/www/html/wp-config.php
-            sed -i "s/username_here/${DBUsername}/g" /var/www/html/wp-config.php
-            sed -i "s/password_here/${DBPassword}/g" /var/www/html/wp-config.php
+            sed -i "s/username_here/${DBUsernameParameter}/g" /var/www/html/wp-config.php
+            sed -i "s/password_here/${DBPasswordParameter}/g" /var/www/html/wp-config.php
             sed -i "s/localhost/${NasDb.Endpoint.Address}/g" /var/www/html/wp-config.php
             amazon-linux-extras install -y lamp-mariadb10.2-php7.2 php7.2
             systemctl restart httpd
@@ -422,9 +414,6 @@ Resources:
 #   BackEnd AutoScaling Group
   nasBackendASG:
     Type: AWS::AutoScaling::AutoScalingGroup
-    # DependsOn:
-    #   - BackendELBTargetGroup
-    #   - BackEndAlb
     Properties:
       AutoScalingGroupName: backend-web-ASG
       LaunchTemplate:
