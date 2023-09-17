@@ -33,6 +33,7 @@ artifacts:
     - permissionStack.yml
     - networkStack.yml
     - serverStack.yml
+    - dnsStack.yml
     - outPutTemplate.yml
     - outPutTemplate1.yml
     - outPutTemplate2.yml

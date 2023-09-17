@@ -4,61 +4,13 @@ Parameters:
   OwnerName:
     Description: The name that is prefixed to resource names
     Type: String
-    Default: leopard-nas
+    Default: my-nas
   
-  User10:
+  User1:
     NoEcho: 'false'
     Type: String
     Description: Add an Engineer user name
-    Default: "Sunita"
-    MinLength: '4'
-    MaxLength: '15'
-
-  User11:
-    NoEcho: 'false'
-    Type: String
-    Description: Add an Engineer user name
-    Default: "Elvie"
-    MinLength: '4'
-    MaxLength: '15'
-
-  User12:
-    NoEcho: 'false'
-    Type: String
-    Description: Add an Engineer user name
-    Default: "Sunday"
-    MinLength: '4'
-    MaxLength: '15'
-
-  User13:
-    NoEcho: 'false'
-    Type: String
-    Description: Add an Engineer user name
-    Default: "Maturin"
-    MinLength: '4'
-    MaxLength: '15'
-
-  User14:
-    NoEcho: 'false'
-    Type: String
-    Description: Add an Engineer user name
-    Default: "Jonathan"
-    MinLength: '4'
-    MaxLength: '15'
-
-  User15:
-    NoEcho: 'false'
-    Type: String
-    Description: Add an Engineer user name
-    Default: "Tcherry"
-    MinLength: '4'
-    MaxLength: '15'
-
-  User16:
-    NoEcho: 'false'
-    Type: String
-    Description: Add an Engineer user name
-    Default: "Mike"
+    Default: "EngineerUser"
     MinLength: '4'
     MaxLength: '15'
 
