@@ -57,7 +57,7 @@ Resources:
 
   RecordSetOthers:
     Type: 'AWS::Route53::RecordSet'
-    DependsOn: [nasCFdistribution]
+    # DependsOn: [nasCFdistribution]
     Properties:
       HostedZoneId: !Ref LeopardHostedZoneId
       Name: !Ref nasRecordSets
