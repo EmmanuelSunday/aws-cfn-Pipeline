@@ -37,14 +37,6 @@ Parameters:
     Type: "AWS::SSM::Parameter::Value<String>"
     Default: userPassword
     NoEcho: 'true'
-
-  # Password:
-  #   NoEcho: 'true'
-  #   Type: String
-  #   Description: New account password
-  #   MinLength: '6'
-  #   MaxLength: '15'
-  #   ConstraintDescription: the password must be between 1 and 15 characters
     
 
 Resources:
